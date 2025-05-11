@@ -30,6 +30,7 @@ public class ChatService {
         );
 
         Map<String, Object> requestBody = new HashMap<>();
+        //requestBody.put("model", "gpt-4o");
         requestBody.put("model", "gpt-3.5-turbo");
         requestBody.put("messages", List.of(message));
         requestBody.put("temperature", 0.7);
