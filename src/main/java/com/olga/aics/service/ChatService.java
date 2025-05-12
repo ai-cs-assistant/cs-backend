@@ -1,4 +1,4 @@
-package com.olga.ai.test1.service;
+package com.olga.aics.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

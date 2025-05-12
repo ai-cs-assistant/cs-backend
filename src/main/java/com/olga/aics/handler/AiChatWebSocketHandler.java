@@ -1,6 +1,6 @@
-package com.olga.ai.test1.handler;
+package com.olga.aics.handler;
 
-import com.olga.ai.test1.service.ChatService;
+import com.olga.aics.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

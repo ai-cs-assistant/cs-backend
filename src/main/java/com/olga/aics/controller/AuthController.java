@@ -1,7 +1,7 @@
-package com.olga.ai.test1.controller;
+package com.olga.aics.controller;
 
-import com.olga.ai.test1.JwtUtil;
-import com.olga.ai.test1.dto.LoginRequest;
+import com.olga.aics.JwtUtil;
+import com.olga.aics.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

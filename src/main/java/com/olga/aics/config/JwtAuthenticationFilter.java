@@ -1,6 +1,6 @@
-package com.olga.ai.test1.config;
+package com.olga.aics.config;
 
-import com.olga.ai.test1.JwtUtil;
+import com.olga.aics.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

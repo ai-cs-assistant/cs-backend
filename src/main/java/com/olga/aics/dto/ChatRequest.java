@@ -1,4 +1,4 @@
-package com.olga.ai.test1.dto;
+package com.olga.aics.dto;
 import lombok.Data;
 
 @Data

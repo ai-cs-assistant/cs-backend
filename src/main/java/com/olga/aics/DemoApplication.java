@@ -1,4 +1,4 @@
-package com.olga.ai.test1;
+package com.olga.aics;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

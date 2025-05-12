@@ -1,4 +1,4 @@
-package com.olga.ai.test1;
+package com.olga.aics;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
