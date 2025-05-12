@@ -1,4 +1,4 @@
-package com.olga.ai.test1;
+package com.olga.aics;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

@@ -1,8 +1,7 @@
-package com.olga.ai.test1.controller;
+package com.olga.aics.controller;
 
-import com.olga.ai.test1.dto.ChatRequest;
-import com.olga.ai.test1.dto.ChatRequest;
-import com.olga.ai.test1.service.ChatService;
+import com.olga.aics.dto.ChatRequest;
+import com.olga.aics.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

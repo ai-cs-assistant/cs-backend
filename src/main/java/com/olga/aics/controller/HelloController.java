@@ -1,4 +1,4 @@
-package com.olga.ai.test1.controller;
+package com.olga.aics.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.olga.ai.test1.config;
+package com.olga.aics.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
