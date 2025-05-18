@@ -53,6 +53,11 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
+    // 從 Token 取得過期時間
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
     // 萃取任意 Claim
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

@@ -4,10 +4,14 @@ import com.olga.aics.JwtUtil;
 import com.olga.aics.dto.LoginRequest;
 import com.olga.aics.dto.RegisterRequest;
 import com.olga.aics.entity.User;
+import com.olga.aics.service.TokenBlacklistService;
 import com.olga.aics.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,9 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @GetMapping("/encode")
     public String encodePassword(@RequestParam String pwd) {
@@ -92,4 +99,35 @@ public class AuthController {
                      .body("登入過程中發生錯誤：" + e.getMessage());
          }
      }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        try {
+            // 從請求頭中獲取 token
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                
+                // 獲取 token 的過期時間
+                long expirationTime = jwtUtil.extractExpiration(token).getTime();
+                
+                // 將 token 加入黑名單
+                tokenBlacklistService.blacklistToken(token, expirationTime);
+            }
+
+            // 清除 SecurityContext 中的認證資訊
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                SecurityContextHolder.clearContext();
+            }
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "登出成功");
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("登出過程中發生錯誤：" + e.getMessage());
+        }
+    }
 }

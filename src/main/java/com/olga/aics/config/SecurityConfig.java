@@ -32,18 +32,23 @@ public class SecurityConfig {
 
                 // 2. 設定授權規則
                 .authorizeHttpRequests(auth -> auth
-                        // 3. 允許所有人訪問 /auth/** 路徑（例如登入、註冊）
-                        .requestMatchers("/login", "/auth/**").permitAll()
+                        // 登出需要認證
+                        .requestMatchers("/auth/logout").authenticated()
+                        // 公開端點
+                        .requestMatchers("/auth/**").permitAll()
                         // 允許 WebSocket 端點訪問
                         .requestMatchers("/ws/**").permitAll()
-                        // 4. 其他所有請求都必須認證過（登入後才能訪問）
+
+                        // 其他 API 需要認證
+                        .requestMatchers("/api/**").authenticated()
+                        // 其他所有請求都必須認證過（登入後才能訪問）
                         .anyRequest().authenticated()
                 )
 
-                // 5. 在 Spring Security 的 UsernamePasswordAuthenticationFilter 之前加入自定義的 jwtFilter
+                // 在 Spring Security 的 UsernamePasswordAuthenticationFilter 之前加入自定義的 jwtFilter
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // 6. 回傳設定好的 SecurityFilterChain
+        // 回傳設定好的 SecurityFilterChain
         return http.build();
     }
 
