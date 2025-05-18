@@ -1,6 +1,7 @@
 package com.olga.aics.config;
 
 import com.olga.aics.JwtUtil;
+import com.olga.aics.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -27,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // ✅ 不要處理 login / auth 請求，讓它們直接通過
         String path = request.getRequestURI();
-        if (path.startsWith("/login") || path.startsWith("/auth/")) {
+        if (  !path.startsWith("/auth/logout") && path.startsWith("/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -36,6 +40,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
+            
+            // 檢查 token 是否在黑名單中
+            if (tokenBlacklistService.isBlacklisted(jwt)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Token has been invalidated\"}");
+                return;
+            }
+
             String username = null;
 
             try {
