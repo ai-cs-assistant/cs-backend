@@ -33,8 +33,9 @@ public class SecurityConfig {
                 // 2. 設定授權規則
                 .authorizeHttpRequests(auth -> auth
                         // 3. 允許所有人訪問 /auth/** 路徑（例如登入、註冊）
-                        .requestMatchers("/auth/**").permitAll()
-
+                        .requestMatchers("/login", "/auth/**").permitAll()
+                        // 允許 WebSocket 端點訪問
+                        .requestMatchers("/ws/**").permitAll()
                         // 4. 其他所有請求都必須認證過（登入後才能訪問）
                         .anyRequest().authenticated()
                 )
