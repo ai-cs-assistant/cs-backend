@@ -18,8 +18,9 @@ public class JwtUtil {
     @Value("${app.secret-key}")
     private String secretKey;
 
-    // Token 有效時間（以毫秒為單位：1000 * 60 * 15 = 15 分鐘）
-    private static final long ACCESS_TOKEN_VALIDITY = 1000 * 60 * 15;
+    // Token 有效時間
+    private static final long ACCESS_TOKEN_VALIDITY = 1000 * 60 * 2; // 測試用: 2分鐘失效
+    //private static final long ACCESS_TOKEN_VALIDITY = 1000 * 60 * 15;//有效 15 分鐘
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
