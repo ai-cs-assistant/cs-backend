@@ -3,7 +3,9 @@ package com.olga.aics.controller;
 import com.olga.aics.JwtUtil;
 import com.olga.aics.dto.LoginRequest;
 import com.olga.aics.dto.RegisterRequest;
+import com.olga.aics.dto.RegistrationEmailMessage;
 import com.olga.aics.entity.User;
+import com.olga.aics.service.RegistrationMessageProducer;
 import com.olga.aics.service.TokenBlacklistService;
 import com.olga.aics.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,9 @@ public class AuthController {
     @Autowired
     private TokenBlacklistService tokenBlacklistService;
 
+    @Autowired
+    private RegistrationMessageProducer messageProducer;
+
     @GetMapping("/encode")
     public String encodePassword(@RequestParam String pwd) {
         return passwordEncoder.encode(pwd);
@@ -57,7 +62,15 @@ public class AuthController {
             user.setRole("USER");
 
             userService.createUser(user);
-            return ResponseEntity.ok("註冊成功");
+
+            // 發送註冊確認郵件
+            RegistrationEmailMessage emailMessage = new RegistrationEmailMessage(
+                request.getEmail(),
+                request.getUsername()
+            );
+            messageProducer.sendRegistrationEmail(emailMessage);
+
+            return ResponseEntity.ok("註冊成功，確認郵件已發送");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("註冊過程中發生錯誤：" + e.getMessage());
